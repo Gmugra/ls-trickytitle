@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Tricky Title</lang>
+	</name>
+	<author>
+		<lang name="default">Gmugra</lang>
+	</author>
+	<homepage>http://mmozg.net</homepage>
+	<version>1.0</version>
+	<requires>
+		<livestreet>1.0.1</livestreet>
+		<plugins>
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Generate HTML Title tag content</lang>
+	</description>
+</plugin>
