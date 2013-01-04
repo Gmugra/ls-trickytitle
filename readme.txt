@@ -27,6 +27,8 @@ INSTALLATION
 
 Детальная документация в комментариях config.php
 
+Обсуждение : http://livestreet.ru/blog/addons/13799.html
+
 ЛИЦЕНЗИЯ
 GNU General Public License, version 2:
 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
