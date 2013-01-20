@@ -42,8 +42,9 @@ class PluginTrickytitle_ModuleTitletext extends PluginTrickytitle_ModuleTagtext 
 
       $sBlogs = "";
       if ($aTitle["show_blogs"] ) {
-        
-        $sBlogs = $this->getBlogs($oSmarty, $sHtmlTitle, $aTitle["show_blogs_max"]);
+
+	$sBlogs = $this->getBlogs($oSmarty, $sHtmlTitle, $aTitle["show_blogs_max"], 
+		                  $aTitle["include_personal_blogs"]?NULL:$this->Lang_Get("blogs_personal_title") );
       }
 
       $sHtmlTitle = $this->doText($oSmarty, $sHtmlTitle, $aTitle, $sParams, $sPage, $sTags, $sBlogs );
@@ -213,6 +214,11 @@ class PluginTrickytitle_ModuleTitletext extends PluginTrickytitle_ModuleTagtext 
       if (!isset($aObject["show_blogs"] ) ) {
         
         $aObject["show_blogs"] = $aDefauts["show_blogs"];
+      }
+
+      if (!isset($aObject["include_personal_blogs"] ) ) {
+        
+        $aObject["include_personal_blogs"] = $aDefauts["include_personal_blogs"];
       }
 
       if (!isset($aObject["show_blogs_mode"] ) ) {

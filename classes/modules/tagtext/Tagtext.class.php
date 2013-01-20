@@ -52,7 +52,7 @@ class PluginTrickytitle_ModuleTagtext extends Module {
     return $sText; 
   }
 
-  protected function getBlogs($oSmarty, $sNotIn, $iShowBlogsMax) {
+  protected function getBlogs($oSmarty, $sNotIn, $iShowBlogsMax, $sPersonalBlogsPrefix) {
      
       $sBlogs = "";
 
@@ -98,7 +98,9 @@ class PluginTrickytitle_ModuleTagtext extends Module {
 
         $i = 1;
         foreach($aGlobalFilteredBlog as $sBlogTitle => $iCount) { 
-          
+
+	  if (isset($sPersonalBlogsPrefix ) && strpos($sBlogTitle,$sPersonalBlogsPrefix ) === 0 ) {continue;}
+
           if ($i > $iShowBlogsMax ) {break; }
                 
           $sBlogs .= $sBlogTitle.", ";

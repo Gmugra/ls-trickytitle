@@ -134,6 +134,9 @@ $config["title"]["show_tags_max"] = 5;
 //генерировать или нет список названий блогов
 $config["title"]["show_blogs"] = true;
 
+//включать или нет персональные блоги в список названий блогов
+$config["title"]["include_personal_blogs"] = false;
+
 //где выводить список названий блогов
 //aftervalue - после дополнительной фразы
 //afteroriginal - после оригинального значения title
@@ -270,20 +273,24 @@ $config["blog"]["*"]["top"]["title"]["show_blogs"] = false;
 $config["personal_blog"]["good"]["*"]["title"]["value"] = "plugin.trickytitle.blog_menu_personal_good";
 $config["personal_blog"]["good"]["*"]["title"]["mode_view_name"] = "before";
 $config["personal_blog"]["good"]["*"]["title"]["show_blogs_mode"] = "afterviewname";
+$config["personal_blog"]["good"]["*"]["title"]["include_personal_blogs"] = true;
 
 $config["personal_blog"]["newall"]["*"]["title"]["value"] = "plugin.trickytitle.blog_menu_personal_new";
 $config["personal_blog"]["newall"]["*"]["title"]["default_period"] = "all";
 $config["personal_blog"]["newall"]["*"]["title"]["show_period"] = false;
 $config["personal_blog"]["newall"]["*"]["title"]["mode_view_name"] = "before";
 $config["personal_blog"]["newall"]["*"]["title"]["show_blogs_mode"] = "afterviewname";
+$config["personal_blog"]["newall"]["*"]["title"]["include_personal_blogs"] = true;
 
 $config["personal_blog"]["discussed"]["*"]["title"]["value"] = "plugin.trickytitle.blog_menu_personal_discussed";
 $config["personal_blog"]["discussed"]["*"]["title"]["mode_view_name"] = "before";
 $config["personal_blog"]["discussed"]["*"]["title"]["show_blogs_mode"] = "afterviewname";
+$config["personal_blog"]["discussed"]["*"]["title"]["include_personal_blogs"] = true;
 
 $config["personal_blog"]["top"]["*"]["title"]["value"] = "plugin.trickytitle.blog_menu_personal_top";
 $config["personal_blog"]["top"]["*"]["title"]["mode_view_name"] = "before";
 $config["personal_blog"]["top"]["*"]["title"]["show_blogs_mode"] = "afterviewname";
+$config["personal_blog"]["top"]["*"]["title"]["include_personal_blogs"] = true;
 
 /* personal_blog action } */
 
