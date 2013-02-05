@@ -250,6 +250,10 @@ $config["blog"]["*"]["-"]["title"]["show_value"] = false;
 $config["blog"]["*"]["-"]["title"]["show_tags"] = true;
 $config["blog"]["*"]["-"]["title"]["show_blogs"] = false;
 
+$config["blog"]["*"]["*"]["title"]["show_value"] = false;
+$config["blog"]["*"]["*"]["title"]["show_tags"] = true;
+$config["blog"]["*"]["*"]["title"]["show_blogs"] = false;
+
 $config["blog"]["*"]["discussed"]["title"]["value"] = "blog_menu_collective_discussed";
 $config["blog"]["*"]["discussed"]["title"]["show_tags"] = true;
 $config["blog"]["*"]["discussed"]["title"]["show_blogs"] = false;
