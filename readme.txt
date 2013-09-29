@@ -1,9 +1,11 @@
 Plugin "Tricky Title" for LiveStreet CMS 1.0.1
-Actual plugin version: 1.0
+Actual plugin version: 2.0
 
-Plagin modify content of HTML tag <title>...</title>,
+Plugin modify content of HTML tag <title>...</title>,
 that it looks informative for the search engines, unique for each page, 
 and at the same time not lose meaningfulness.
+
+Also Plugin can fill value of meta tag "keywords", using same ideas. 
 
 Primarily focused on pages with lists of topics.
 
@@ -17,11 +19,16 @@ INSTALLATION
 
 ------------------------------------------------------------------------------------------
 Плагин "Tricky Title" для LiveStreet CMS 1.0.1
-Текущая версия плагина: 1.0
+Текущая версия плагина: 2.0
+
+Плагин разработан для и используется на сайте ММОзговед (http://mmozg.net).
 
 Плагин предназначен для динамической модификации содержимого HTML тега <title>...</title>.
 Таким образом, чтобы оно выглядело информативно для поисковых систем, 
 было уникальным для любой страницы, и вместе с тем, не теряло осмысленности.
+
+Кроме того, плагин поддреживает аналогичную по принципу возможность автоматической 
+генерации содержимого meta тега keywords
 
 В первую очередь нацелено на различные страницы со списками топиков.
 

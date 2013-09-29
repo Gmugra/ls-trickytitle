@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------
  * Plugin Name: Tricky Title 
- * Plugin Version: 1.0
+ * Plugin Version: 2.0
  * Author: Gmugra
  * Author URI: http://mmozg.net
  * LiveStreet Version: 1.0.1
@@ -18,7 +18,7 @@ class PluginTrickytitle_ModuleTitletext extends PluginTrickytitle_ModuleTagtext 
 
   public function doTitle($oSmarty, $aTitle, $sParams, $sPage ) {
 
-      if (!isset($aTitle) ) {
+      if (!isset($aTitle) || count($aTitle) == 0 ) {
 	
 	return;
       }	
@@ -44,7 +44,7 @@ class PluginTrickytitle_ModuleTitletext extends PluginTrickytitle_ModuleTagtext 
       if ($aTitle["show_blogs"] ) {
 
 	$sBlogs = $this->getBlogs($oSmarty, $sHtmlTitle, $aTitle["show_blogs_max"], 
-		                  $aTitle["include_personal_blogs"]?NULL:$this->Lang_Get("blogs_personal_title") );
+		                  $aTitle["include_personal_blogs"]?"":$this->Lang_Get("blogs_personal_title") );
       }
 
       $sHtmlTitle = $this->doText($oSmarty, $sHtmlTitle, $aTitle, $sParams, $sPage, $sTags, $sBlogs );
@@ -251,3 +251,4 @@ class PluginTrickytitle_ModuleTitletext extends PluginTrickytitle_ModuleTagtext 
       return $aObject; 
     }
 }
+?>

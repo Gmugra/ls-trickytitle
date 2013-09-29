@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------
  * Plugin Name: Tricky Title 
- * Plugin Version: 1.0
+ * Plugin Version: 2.0
  * Author: Gmugra
  * Author URI: http://mmozg.net
  * LiveStreet Version: 1.0.1
@@ -14,15 +14,51 @@
 class PluginTrickytitle_ModuleViewer extends PluginTrickytitle_Inherit_ModuleViewer {
 
     public function Display($sTemplate) {
+
+      $aParamsConfig = $this->getParamsConfig();
+
+      if (isset($aParamsConfig) ) {
 	
-      $this->doTrickyTitle();
+	$aPaging = $this->getPaging();
+
+	$this->doTrickyTitle($aParamsConfig, $aPaging );
+	$this->doTrickyKeywords($aParamsConfig );
+      }
 
       parent::Display($sTemplate);	
     }
 
-    protected function doTrickyTitle() {
+    protected function doTrickyKeywords($aParamsConfig ) { 
 
-        $sAction = Router::GetAction();
+	    $this->PluginTrickytitle_ModuleKeywordstext_doKeywords(
+		    $this->Viewer_GetSmartyObject(), 
+		    isset($aParamsConfig["keywords"])?$aParamsConfig["keywords"]:array() ); 
+    }
+
+    protected function doTrickyTitle($aParamsConfig, $aPaging ) {
+
+        $sParams = NULL;
+        $sPage = "1";
+        if (isset($aPaging) ) {
+
+          $sParams = $aPaging["sGetParams"];
+          $sPage = $aPaging["iCurrentPage"];
+        }
+	  
+        $this->PluginTrickytitle_ModuleTitletext_doTitle(
+		$this->Viewer_GetSmartyObject(), 
+		isset($aParamsConfig["title"])?$aParamsConfig["title"]:array(), 
+		$sParams, $sPage );   
+    }    
+
+    protected function getPaging() {
+	   
+        return $this->Viewer_GetSmartyObject()->getTemplateVars("aPaging");
+    }
+
+    protected function getParamsConfig() {
+
+	$sAction = Router::GetAction();
 
         $aActionConfig = Config::Get("plugin.trickytitle.".$sAction);
         if (!isset($aActionConfig ) ) {
@@ -72,20 +108,9 @@ class PluginTrickytitle_ModuleViewer extends PluginTrickytitle_Inherit_ModuleVie
         } else {
         
           return;
-        }
+	}
 
-        $sParams = NULL;
-        $sPage = "1";
-        $aPaging = $this->Viewer_GetSmartyObject()->getTemplateVars("aPaging");
-	if (isset($aPaging) ) {
-
-          $sParams = $aPaging["sGetParams"];
-          $sPage = $aPaging["iCurrentPage"];
-        }
-	  
-        $this->PluginTrickytitle_ModuleTitletext_doTitle(
-          $this->Viewer_GetSmartyObject(), $aParamsConfig["title"], $sParams, $sPage );   
-    }    
-      
+	return $aParamsConfig;
+    }  
 }
 ?>

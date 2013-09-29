@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------
  * Plugin Name: Tricky Title
- * Plugin Version: 1.0
+ * Plugin Version: 2.0
  * Author: Gmugra
  * Author URI: http://mmozg.net
  * LiveStreet Version: 1.0.1
@@ -17,11 +17,16 @@
 Таким образом, чтобы оно выглядело информативно для поисковых систем, 
 было уникальным для любой страницы, и вместе с тем, не теряло осмысленности.
 
+Кроме того, плагин поддреживает аналогичную по принципу возможность автоматической 
+генерации содержимого meta тега keywords
+
 В первую очередь нацелено на различные страницы со списками топиков.
 Плагин активно использует данные из аTopics и aPaging.
 
 
-Структура результата (в типичных случаях, кое-что можно менять конфигурационными параметрами) выглядит так:
+I. TITLE
+
+Структура результата для title (в типичных случаях, кое-что можно менять конфигурационными параметрами) выглядит так:
 
 <original><s><value (tags)><s><period><s><page><s><site>
 
@@ -67,11 +72,26 @@ plugin.trickytitle.my_text_key
 Сортируются во-первых по частоте встречаемости, и во-вторых по собственному рейтингу (getRating() )
 Первые N блогов (N задаётся конфигурационным параметром ), из этого отсортированного списка,
 попадают в заголовок.
+
+
+II. KEYWORDS
+
+Содержимое meta тега keywords cтроится на основе списков названий блогов и/или тегов из топиков, построенных
+в точности так же как это делается для title. 
+
+Список клюевых слов строится так: название сайта, названия блогов на странице, теги из топиков на старнице.
+Можно включать/выключать отдельные списки (т.е. напрмер не использовать теги из топиков для страницы),
+но нельзя менять порядок.
+
+Поддерживается контроль того, чтобы исключались повторения 
+(типичный пример повторений - тег в топике который совпадает с названием блога)
+
+
 */
 
 
 
-/* Defaults { */
+/* Title Defaults { */
 
 //По умолчанию, все конфигурации страниц имеют значения параметров как в этом блоке.
 //Однако, любой параметр может быть переопределён для конкретной страницы.
@@ -147,13 +167,37 @@ $config["title"]["show_blogs_mode"] = "aftervalue"; // aftervalue | afterorigina
 //максимальное количество названий блогов в списке
 $config["title"]["show_blogs_max"] = 5;
 
-/* Defaults } */
+/* Title Defaults } */
+
+
+
+/* Keywrds Defaults { */
+
+//генерировать содержимое meta тега keywords или нет
+$config["keywords"]["on"] = true;
+
+//включать в список название сайта или нет
+$config["keywords"]["view_name"] = true;
+
+//включать в список названия блогов или нет
+$config["keywords"]["show_blogs"] = true;
+
+//включать в список теги из топиков или нет
+$config["keywords"]["show_tags"] = true;
+
+//максимальное количество ключевых слов в списке
+$config["keywords"]["show_max"] = 20;
+
+//включать в список названия персональных блогов или нет
+$config["keywords"]["include_personal_blogs"] = false;
+
+/* Keywrds Defaults } */
 
 
 /*  
 Структура конфигурации страницы:
 
-$config["action"]["event"]["firstparam"]["title"]["paramname"]
+$config["action"]["event"]["firstparam"]["title"|"keywords"]["paramname"]
 
 action - action LiveStreet, к которому относится страница. То, что возвращает Router::GetAction()
 
@@ -168,9 +212,10 @@ firstparam - первый параметр, то что возвращает Rou
 -- Если значение параметра и/или вообще его наличие безразлично, то нужно использовать "*"
 -- Конфигурации с "*", имеют более низкий приоретет чем конфигурации с "-"
 
-title - константа, всегда так.
+title - показывает что конфигурационная строка относится к title.
+keywords - показывает что конфигурационная строка относится к keywords
 
-paramname - любой параметр описанный секции Defaults выше.
+paramname - любой параметр описанный секциях Defaults выше. 
 
 Общая рекомендация -  вырубать параметрами всё, что не получиться использовать на старнице.
 Т.е. если известно что, например, фильтра по временному интервалу там нет, 
@@ -179,6 +224,21 @@ paramname - любой параметр описанный секции Defaults
 Все параметры, которые не указаны для конкретной страницы получат значения,
 указанные в вышеописанном блоке "по умолчанию".
 */
+
+
+/* worlds action { */
+
+$config["worlds"]["*"]["*"]["keywords"]["on"] = "true";
+
+/* worlds action } */
+
+
+
+/* blogs action { */
+
+$config["blogs"]["*"]["*"]["keywords"]["on"] = "true";
+
+/* blogs action } */
 
 
 
@@ -221,6 +281,7 @@ $config["feed"]["index"]["*"]["title"]["show_period"] = false;
 $config["feed"]["index"]["*"]["title"]["show_page"] = false;
 $config["feed"]["index"]["*"]["title"]["mode_view_name"] = "on";
 $config["feed"]["index"]["*"]["title"]["mode"] = "before";
+$config["feed"]["index"]["*"]["keywords"]["on"] = "false";
 
 /* feed action } */
 
@@ -305,18 +366,22 @@ $config["personal_blog"]["top"]["*"]["title"]["include_personal_blogs"] = true;
 $config["people"][""]["*"]["title"]["value"] = "people_menu_users_all";
 $config["people"][""]["*"]["title"]["show_period"] = false;
 $config["people"][""]["*"]["title"]["show_blogs"] = false;
+$config["people"][""]["*"]["keywords"]["on"] = "false";
 
 $config["people"]["index"]["*"]["title"]["value"] = "people_menu_users_all";
 $config["people"]["index"]["*"]["title"]["show_period"] = false;
 $config["people"]["index"]["*"]["title"]["show_blogs"] = false;
+$config["people"]["index"]["*"]["keywords"]["on"] = "false";
 
 $config["people"]["online"]["*"]["title"]["value"] = "people_menu_users_online";
 $config["people"]["online"]["*"]["title"]["show_period"] = false;
 $config["people"]["online"]["*"]["title"]["show_blogs"] = false;
+$config["people"]["online"]["*"]["keywords"]["on"] = "false";
 
 $config["people"]["new"]["*"]["title"]["value"] = "people_menu_users_new";
 $config["people"]["new"]["*"]["title"]["show_period"] = false;
-$config["people"]["new"]["*"]["title"]["show_blogs"] = false;                           
+$config["people"]["new"]["*"]["title"]["show_blogs"] = false;
+$config["people"]["new"]["*"]["keywords"]["on"] = "false";
 
 /* people action } */
 
@@ -339,14 +404,16 @@ $config["stream"]["user"]["*"]["title"]["show_period"] = false;
 $config["stream"]["user"]["*"]["title"]["show_page"] = false;
 $config["stream"]["user"]["*"]["title"]["show_blogs"] = false;
 $config["stream"]["user"]["*"]["title"]["mode_view_name"] = "on";
-$config["stream"]["user"]["*"]["title"]["mode"] = "before"; 
+$config["stream"]["user"]["*"]["title"]["mode"] = "before";
+$config["stream"]["user"]["*"]["keywords"]["on"] = "false";
 
 $config["stream"]["all"]["*"]["title"]["value"] = "plugin.trickytitle.stream_menu_all";
 $config["stream"]["all"]["*"]["title"]["show_period"] = false;
 $config["stream"]["all"]["*"]["title"]["show_page"] = false;
 $config["stream"]["all"]["*"]["title"]["show_blogs"] = false;
 $config["stream"]["all"]["*"]["title"]["mode_view_name"] = "on";
-$config["stream"]["all"]["*"]["title"]["mode"] = "before"; 
+$config["stream"]["all"]["*"]["title"]["mode"] = "before";
+$config["stream"]["all"]["*"]["keywords"]["on"] = "false";
 
 /* tag action } */
 

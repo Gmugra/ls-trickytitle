@@ -2,7 +2,7 @@
 
 /* ---------------------------------------------------------------------------
  * Plugin Name: Tricky Title
- * Plugin Version: 1.0
+ * Plugin Version: 2.0
  * Author: Gmugra
  * Author URI: http://mmozg.net
  * LiveStreet Version: 1.0.1
