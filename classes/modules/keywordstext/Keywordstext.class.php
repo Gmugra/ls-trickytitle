@@ -48,15 +48,32 @@ class PluginTrickytitle_ModuleKeywordstext extends PluginTrickytitle_ModuleTagte
 				}
 
 			} else {
+				
+				$oTopic = $oSmarty->getTemplateVars("oTopic");
+				if (isset($oTopic) ) {
+					$aAdded = 
+						array_merge($aAdded,
+							$this->getBlogByTopicAsArray(
+								$oTopic,
+								$aKeywords["include_personal_blogs"]?"":$this->Lang_Get("blogs_personal_title"),
+								$aAdded
+							)
+						);
 
-				$aAdded = 
-					array_merge($aAdded,
-						$this->getBlogsByBlogsAsArray(
-							$oSmarty, "", 
-							$aKeywords["include_personal_blogs"]?"":$this->Lang_Get("blogs_personal_title"),
-							$aAdded
-						)
-					);
+					if ($aKeywords["show_tags"] ) {
+						$aAdded = array_merge($aAdded, $this->getTagsByTopicAsArray($oTopic, "", $aAdded ) );
+					}
+				} else {
+
+					$aAdded = 
+						array_merge($aAdded,
+							$this->getBlogsByBlogsAsArray(
+								$oSmarty, "", 
+								$aKeywords["include_personal_blogs"]?"":$this->Lang_Get("blogs_personal_title"),
+								$aAdded
+							)
+						);
+				}
 			}
 
 		} else if ($aKeywords["show_tags"] ) {

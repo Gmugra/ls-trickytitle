@@ -86,6 +86,25 @@ class PluginTrickytitle_ModuleTagtext extends Module {
       return $aResultBlog;
   }
 
+  protected function getBlogByTopicAsArray($oTopic, $sPersonalBlogsPrefix, $aIgnoreBlogs = array() ) {
+
+	$aResultBlog = array();
+	if (!isset($oTopic) ) {
+	      return $aResultBlog;
+	}
+
+	$sBlogTitle = htmlspecialchars($oTopic->getBlog()->getTitle());
+
+	if (in_array($sBlogTitle, $aIgnoreBlogs) ) {
+	    return $aResultBlog;
+	}
+
+	if (isset($sPersonalBlogsPrefix ) && $sPersonalBlogsPrefix != "" && strpos($sBlogTitle,$sPersonalBlogsPrefix ) === 0 ) { return $aResultBlog;}
+
+	array_push($aResultBlog,$sBlogTitle);
+	return $aResultBlog;
+  }
+
   protected function getBlogsByBlogsAsArray($oSmarty, $sNotIn, $sPersonalBlogsPrefix, $aIgnoreBlogs = array() ) {
 	  
       $aBlogs = $oSmarty->getTemplateVars("aBlogs");
@@ -154,6 +173,35 @@ class PluginTrickytitle_ModuleTagtext extends Module {
 		);
     }
 
+    protected function getTagsByTopicAsArray($oTopic, $sNotIn, $aIgnoreTags = array() ) {
+
+	if (!isset($oTopic) ) {
+  	   return  array();
+	}
+
+	$aGlobalTag = array();
+
+ 	$aTag = explode(",",$oTopic->getTags() );
+	foreach($aTag as $sTag) {
+
+            $sTag2 = htmlspecialchars($sTag);	    
+
+	    if (in_array($sTag2, $aIgnoreTags) ) {
+	      	continue;
+	    }
+
+            if (array_key_exists($sTag2, $aGlobalTag)   ) {
+	      
+              	$aGlobalTag[$sTag2]++;	
+            } else {
+
+              	$aGlobalTag[$sTag2] = 1;
+            }	 
+       }
+
+	return $this->filterTags($aGlobalTag, $sNotIn );
+    }
+
     protected function getTagsAsArray($oSmarty, $sNotIn, $aIgnoreTags = array() ) {
 
       $aGlobalTag = array();
@@ -184,6 +232,11 @@ class PluginTrickytitle_ModuleTagtext extends Module {
   	
           }
 	}
+
+        return $this->filterTags($aGlobalTag, $sNotIn );
+    }
+
+    protected function filterTags($aGlobalTag, $sNotIn ) {
 
 	if (count($aGlobalTag) == 0 ) {
           
